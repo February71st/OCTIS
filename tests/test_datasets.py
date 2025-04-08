@@ -54,11 +54,35 @@ def test_preprocessing_english_stops_split(data_dir):
 def test_preprocessing_multiprocess(data_dir):
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
     p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True,
-                      lemmatize=False,  num_processes=10, split=False,
+                      lemmatize=False, split=False,
                       min_chars=2, min_words_docs=1)
     dataset = p.preprocess_dataset(
         documents_path=texts_path,
     )
+
+    dataset.save(data_dir+"/sample_texts/")
+    dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
+
+
+def test_preprocessing_nothing(data_dir):
+    texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
+    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=False,
+                      remove_numbers = False,
+                      lemmatize=False, split=False,
+                      min_chars=1, min_words_docs=0)
+    
+    unprocessed = [d.strip() for d in open(texts_path, "r").readlines() if len(d.strip()) > 0]
+    lens = [len(d.split()) for d in unprocessed]
+
+    dataset = p.preprocess_dataset(
+        documents_path=texts_path,
+    )
+    print(dataset.get_corpus())
+    lens_pros = [len(d) for d in dataset.get_corpus()]
+    print(list(zip(lens,lens_pros)))
+    assert len(lens) == len(lens_pros)
+    for i in range(len(lens_pros)):
+        assert lens[i] == lens_pros[i]
 
     dataset.save(data_dir+"/sample_texts/")
     dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
