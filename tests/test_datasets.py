@@ -54,7 +54,7 @@ def test_preprocessing_english_stops_split(data_dir):
 def test_preprocessing_multiprocess(data_dir):
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
     p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True,
-                      lemmatize=False, split=False,
+                      lemmatize=False, num_processes=10, split=False,
                       min_chars=2, min_words_docs=1)
     dataset = p.preprocess_dataset(
         documents_path=texts_path,
