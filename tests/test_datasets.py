@@ -66,7 +66,7 @@ def test_preprocessing_multiprocess(data_dir):
 
 def test_preprocessing_minimal(data_dir):
     """
-    This test is checking to make sure preprocessing does not remove tokens which the user doe not
+    This test is checking to make sure preprocessing does not remove tokens which the user does not
     specify should be removed.
     """
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
@@ -87,9 +87,6 @@ def test_preprocessing_minimal(data_dir):
     assert len(raw_word_lens) == len(preprocessed_word_lens)
     for i in range(len(preprocessed_word_lens)):
         assert raw_word_lens[i] == preprocessed_word_lens[i]
-
-    dataset.save(data_dir+"/sample_texts/")
-    dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
 
 
 def test_load_20ng():
